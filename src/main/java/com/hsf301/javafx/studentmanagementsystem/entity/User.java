@@ -1,9 +1,12 @@
 package com.hsf301.javafx.studentmanagementsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
-@Table(name = "User")
+@Table(name = "[User]")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,17 +17,21 @@ public class User {
     private String email;
     @Column(name = "password",length = 255)
     private String password;
-    @Column(name="role")
-    private int role;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<BorrowRecord> borrowRecords;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "roleID",referencedColumnName = "roleID")
+    @JsonManagedReference
+    private Role role;
     public User() {
     }
-    
-    public User(String name, String email, String password, int role) {
+
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = role;
     }
 
     public int getUserId() {
@@ -57,13 +64,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public int getRole() {
-        return role;
-    }
-
-    public void setRole(int role) {
-        this.role = role;
     }
 }

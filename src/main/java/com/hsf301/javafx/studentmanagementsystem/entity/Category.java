@@ -1,6 +1,9 @@
 package com.hsf301.javafx.studentmanagementsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "Category")
@@ -10,7 +13,9 @@ public class Category {
     private int categoryId;
     @Column(name = "CategoryName",columnDefinition = "NVARCHAR(255)")
     private String categoryName;
-
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Book> books;
     public Category() {
     }
 

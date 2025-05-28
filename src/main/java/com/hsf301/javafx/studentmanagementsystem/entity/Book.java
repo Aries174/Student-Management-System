@@ -1,6 +1,9 @@
 package com.hsf301.javafx.studentmanagementsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "Book")
@@ -12,20 +15,23 @@ public class Book {
     private String title;
     @Column(name = "Author",columnDefinition = "NVARCHAR(255)")
     private String author;
-    @Column(name = "Category",columnDefinition = "NVARCHAR(255)")
-    private String category;
     @Column(name = "AvailableCopies")
     private int availableCopies;
     @Column(name = "totalCopies")
     private int totalCopies;
+    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<BorrowRecord> borrowRecords;
 
+    @ManyToOne
+    @JoinColumn(name = "categoryID",nullable = false,referencedColumnName = "categoryID")
+    private Category category;
     public Book() {
     }
 
-    public Book(String title, String author, String category, int availableCopies, int totalCopies) {
+    public Book(String title, String author, int availableCopies, int totalCopies) {
         this.title = title;
         this.author = author;
-        this.category = category;
         this.availableCopies = availableCopies;
         this.totalCopies = totalCopies;
     }
@@ -54,13 +60,6 @@ public class Book {
         this.author = author;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
 
     public int getAvailableCopies() {
         return availableCopies;

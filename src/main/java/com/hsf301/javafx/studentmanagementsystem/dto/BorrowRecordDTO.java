@@ -1,34 +1,20 @@
-package com.hsf301.javafx.studentmanagementsystem.entity;
+package com.hsf301.javafx.studentmanagementsystem.dto;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "BorrowRecord")
-public class BorrowRecord {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class BorrowRecordDTO {
     private int borrowRecordID;
-    @Column(name = "borrow_date")
     private Date borrowDate;
-    @Column(name = "due_date")
     private Date dueDate;
-    @Column(name = "return_date")
     private Date returnDate;
-    @Column(name = "Status")
     private boolean status;
-    @ManyToOne
-    @JoinColumn(name = "userID",nullable = false,referencedColumnName = "userID")
-    private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "bookID",nullable = false,referencedColumnName = "bookID")
-    private Book book;
-    public BorrowRecord() {
+    public BorrowRecordDTO() {
     }
 
-    public BorrowRecord(int borrowRecordID, Date borrowDate, Date dueDate, Date returnDate, boolean status) {
+    public BorrowRecordDTO(int borrowRecordID, Date borrowDate, Date dueDate, Date returnDate, boolean status) {
         this.borrowRecordID = borrowRecordID;
         this.borrowDate = borrowDate;
         this.dueDate = dueDate;
