@@ -1,10 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Library Login & Register</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    /* Reset and basics */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #e0f3f8 0%, #a8d8ea 100%);
+      color: #1b262c;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    /* Container */
+    .auth-container {
+      background: #ffffffcc;
+      backdrop-filter: saturate(180%) blur(12px);
+      border-radius: 16px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      padding: 32px 32px 48px;
+      box-sizing: border-box;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    header h1 {
+      font-weight: 700;
+      font-size: 2.25rem;
+      margin-bottom: 4px;
+      color: #05445e;
+    }
+    header p {
+      font-weight: 500;
+      color: #3282b8;
+      font-size: 1rem;
+    }
+
+    /* Tabs */
+    .tab-buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 32px;
+      border-bottom: 2px solid #b7d6e8;
+    }
+    .tab-buttons button {
+      background: none;
+      border: none;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #3282b8;
+      padding: 12px 16px;
+      cursor: pointer;
+      border-bottom: 4px solid transparent;
+      transition: border-color 0.3s ease, color 0.3s ease;
+      flex: 1;
+      text-align: center;
+    }
+    .tab-buttons button[aria-selected="true"] {
+      border-color: #05445e;
+      color: #05445e;
+    }
+    .tab-buttons button:focus-visible {
+      outline-offset: 4px;
+      outline: 3px solid #99d5ff;
+      outline-radius: 8px;
+    }
+
+    /* Forms */
+    form {
+      display: none;
+      flex-direction: column;
+    }
+    form.active {
+      display: flex;
+    }
+    label {
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #05445e;
+      user-select: none;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 12px 16px;
+      border: 1.5px solid #b7d6e8;
+      border-radius: 12px;
+      font-size: 1rem;
+      margin-bottom: 24px;
+      transition: border-color 0.3s ease;
+      width: 100%;
+      color: #05445e;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: #3282b8;
+      outline: none;
+      box-shadow: 0 0 8px #99d5ffaa;
+    }
+
+    /* Buttons */
+    button.submit-btn {
+      background: linear-gradient(135deg, #05445e 0%, #3282b8 100%);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 16px 0;
+      font-size: 1.125rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    button.submit-btn:hover,
+    button.submit-btn:focus-visible {
+      background: linear-gradient(135deg, #04607a 0%, #1f5a8d 100%);
+      box-shadow: 0 8px 16px rgba(3, 66, 88, 0.5);
+      outline: none;
+    }
+
+    /* Error message */
+    .error-message {
+      background: #f7d4d6;
+      color: #9b2c2c;
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      font-weight: 600;
+      display: none;
+    }
+    .error-message.active {
+      display: block;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .auth-container {
+        padding: 24px 24px 40px;
+      }
+      header h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
 </head>
 <body>
-$END$
+<main class="auth-container" role="main" aria-labelledby="authTitle">
+  <header>
+    <h1 id="authTitle">Library Portal</h1>
+    <p>Access your library account or create a new one</p>
+  </header>
+
+  <nav class="tab-buttons" role="tablist" aria-label="Authentication Tabs">
+    <button role="tab" aria-selected="true" aria-controls="loginPanel" id="loginTab" tabindex="0">Login</button>
+    <button role="tab" aria-selected="false" aria-controls="registerPanel" id="registerTab" tabindex="-1">Register</button>
+  </nav>
+
+  <!-- Login Form -->
+  <form id="loginPanel" role="tabpanel" aria-labelledby="loginTab" class="active" novalidate>
+    <div class="error-message" id="loginError" role="alert" aria-live="assertive"></div>
+    <label for="loginEmail">Email</label>
+    <input type="email" id="loginEmail" name="loginEmail" autocomplete="email" required placeholder="name@example.com" />
+    <label for="loginPassword">Password</label>
+    <input type="password" id="loginPassword" name="loginPassword" autocomplete="current-password" required placeholder="Your password" />
+    <button type="submit" class="submit-btn">Log In</button>
+  </form>
+
+  <!-- Register Form -->
+  <form id="registerPanel" role="tabpanel" aria-labelledby="registerTab" novalidate>
+    <div class="error-message" id="registerError" role="alert" aria-live="assertive"></div>
+    <label for="registerName">Full Name</label>
+    <input type="text" id="registerName" name="registerName" autocomplete="name" required placeholder="Your full name" />
+    <label for="registerEmail">Email</label>
+    <input type="email" id="registerEmail" name="registerEmail" autocomplete="email" required placeholder="name@example.com" />
+    <label for="registerPassword">Password</label>
+    <input type="password" id="registerPassword" name="registerPassword" autocomplete="new-password" required placeholder="Choose a password" />
+    <label for="registerConfirmPassword">Confirm Password</label>
+    <input type="password" id="registerConfirmPassword" name="registerConfirmPassword" autocomplete="new-password" required placeholder="Repeat your password" />
+    <button type="submit" class="submit-btn">Register</button>
+  </form>
+</main>
+
+<script>
+  (() => {
+    const loginTab = document.getElementById('loginTab');
+    const registerTab = document.getElementById('registerTab');
+    const loginPanel = document.getElementById('loginPanel');
+    const registerPanel = document.getElementById('registerPanel');
+    const loginError = document.getElementById('loginError');
+    const registerError = document.getElementById('registerError');
+
+    // Tab switching with accessibility
+    function switchTab(selectedTab) {
+      if (selectedTab === 'login') {
+        loginTab.setAttribute('aria-selected', 'true');
+        loginTab.tabIndex = 0;
+        loginPanel.classList.add('active');
+        loginPanel.removeAttribute('hidden');
+
+        registerTab.setAttribute('aria-selected', 'false');
+        registerTab.tabIndex = -1;
+        registerPanel.classList.remove('active');
+        registerPanel.setAttribute('hidden', '');
+
+        loginTab.focus();
+      } else {
+        registerTab.setAttribute('aria-selected', 'true');
+        registerTab.tabIndex = 0;
+        registerPanel.classList.add('active');
+        registerPanel.removeAttribute('hidden');
+
+        loginTab.setAttribute('aria-selected', 'false');
+        loginTab.tabIndex = -1;
+        loginPanel.classList.remove('active');
+        loginPanel.setAttribute('hidden', '');
+
+        registerTab.focus();
+      }
+      clearErrors();
+    }
+
+    loginTab.addEventListener('click', () => switchTab('login'));
+    registerTab.addEventListener('click', () => switchTab('register'));
+
+    // Keyboard navigation for tabs
+    [loginTab, registerTab].forEach(tab => {
+      tab.addEventListener('keydown', e => {
+        switch (e.key) {
+          case 'ArrowRight':
+          case 'ArrowDown':
+            e.preventDefault();
+            if (tab === loginTab) switchTab('register');
+            else switchTab('login');
+            break;
+          case 'ArrowLeft':
+          case 'ArrowUp':
+            e.preventDefault();
+            if (tab === registerTab) switchTab('login');
+            else switchTab('register');
+            break;
+        }
+      });
+    });
+
+    // Clear error messages
+    function clearErrors() {
+      loginError.textContent = '';
+      loginError.classList.remove('active');
+      registerError.textContent = '';
+      registerError.classList.remove('active');
+    }
+
+    // Dummy validation helpers
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email.toLowerCase());
+    }
+
+    // Login form submit
+    loginPanel.addEventListener('submit', e => {
+      e.preventDefault();
+      clearErrors();
+      const email = loginPanel.loginEmail.value.trim();
+      const password = loginPanel.loginPassword.value;
+
+      if (!email || !validateEmail(email)) {
+        loginError.textContent = 'Please enter a valid email address.';
+        loginError.classList.add('active');
+        loginPanel.loginEmail.focus();
+        return;
+      }
+      if (!password) {
+        loginError.textContent = 'Please enter your password.';
+        loginError.classList.add('active');
+        loginPanel.loginPassword.focus();
+        return;
+      }
+
+      // Simulate success login
+      alert(`Welcome back, ${email}! (This is a demo, no backend connection.)`);
+      loginPanel.reset();
+    });
+
+    // Register form submit
+    registerPanel.addEventListener('submit', e => {
+      e.preventDefault();
+      clearErrors();
+      const name = registerPanel.registerName.value.trim();
+      const email = registerPanel.registerEmail.value.trim();
+      const pass = registerPanel.registerPassword.value;
+      const confirmPass = registerPanel.registerConfirmPassword.value;
+
+      if (!name || name.length < 3) {
+        registerError.textContent = 'Please enter your full name (at least 3 characters).';
+        registerError.classList.add('active');
+        registerPanel.registerName.focus();
+        return;
+      }
+      if (!email || !validateEmail(email)) {
+        registerError.textContent = 'Please enter a valid email address.';
+        registerError.classList.add('active');
+        registerPanel.registerEmail.focus();
+        return;
+      }
+      if (pass.length < 6) {
+        registerError.textContent = 'Password must be at least 6 characters.';
+        registerError.classList.add('active');
+        registerPanel.registerPassword.focus();
+        return;
+      }
+      if (pass !== confirmPass) {
+        registerError.textContent = 'Passwords do not match.';
+        registerError.classList.add('active');
+        registerPanel.registerConfirmPassword.focus();
+        return;
+      }
+
+      // Simulate success registration
+      alert(`Thank you for registering, ${name}! (This is a demo, no backend connection.)`);
+      registerPanel.reset();
+    });
+  })();
+</script>
 </body>
 </html>
+

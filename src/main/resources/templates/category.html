@@ -1,10 +1,392 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- Bootstrap CDN cần nếu dùng modal -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <title>Quản lý sản phẩm</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background-color: #f9fafb;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #111827;
+      color: white;
+      padding: 20px;
+    }
+    .sidebar h2 {
+      font-size: 20px;
+      text-align: center;
+      color: #10b981;
+      margin-bottom: 25px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar ul li {
+      margin: 15px 0;
+    }
+    /* Default link style without arrow */
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 10px 15px;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .sidebar ul li a:hover {
+      background-color: #10b981;
+    }
+
+    /* Arrow only for category toggle */
+    #category-toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Arrow shape using borders for category toggle */
+    #category-toggle::after {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-right: 2px solid white;
+      border-bottom: 2px solid white;
+      transform: rotate(-45deg);
+      transition: transform 0.3s ease;
+      margin-left: 10px;
+    }
+
+    /* Rotate arrow down when toggled */
+    #category-toggle.open::after {
+      transform: rotate(45deg);
+    }
+
+    .category-list {
+      display: none; /* Initially hidden */
+      margin-top: 10px;
+      padding-left: 15px;
+      background-color: #1f2937;
+      border-radius: 6px;
+    }
+
+    .category-list li {
+      padding: 8px 10px;
+      color: white;
+      border-bottom: 1px solid #374151;
+    }
+
+    .category-list li:last-child {
+      border-bottom: none;
+    }
+
+    .product-container {
+      flex: 1;
+      padding: 30px;
+    }
+
+    h2 {
+      font-size: 24px;
+      color: #111827;
+      margin-bottom: 20px;
+    }
+
+    .add-btn {
+      background-color: #10b981;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: background-color 0.3s;
+    }
+
+    .add-btn:hover {
+      background-color: #059669;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    table th, table td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    table th {
+      background-color: #f3f4f6;
+      color: #111827;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    table tr:not(:last-child) {
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      font-size: 13px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 5px;
+      transition: background-color 0.2s;
+    }
+
+    .edit-btn {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    .edit-btn:hover {
+      background-color: #2563eb;
+    }
+
+    .delete-btn {
+      background-color: #ef4444;
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background-color: #dc2626;
+    }
+
+    .pagination {
+      margin-top: 25px;
+      text-align: center;
+    }
+
+    .page-btn {
+      display: inline-block;
+      background-color: white;
+      border: 1px solid #d1d5db;
+      color: #374151;
+      padding: 8px 14px;
+      margin: 0 4px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .page-btn:hover {
+      background-color: #10b981;
+      color: white;
+      border-color: #10b981;
+    }
+
+    .page-btn.active {
+      background-color: #10b981;
+      color: white;
+      border-color: #10b981;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .product-container {
+        padding: 20px;
+      }
+
+      table th, table td {
+        padding: 10px;
+        font-size: 13px;
+      }
+    }
+
+  </style>
 </head>
 <body>
-$END$
+
+<div class="sidebar">
+  <h2>FPT Library</h2>
+  <ul>
+    <li>
+      <a href="#" id="category-toggle" aria-expanded="false" aria-controls="category-list">Thể Loại</a>
+      <ul class="category-list" id="category-list" >
+        <li  th:each="c:${categories}">
+          <a th:href="@{/category(id=${c.getCategoryId()})}" th:text="${c.getCategoryName()}"></a>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#">Lịch sử</a></li>
+    <li><a href="#">Tài Khoản</a></li>
+    <li><a href="#">Cài đặt</a></li>
+  </ul>
+</div>
+
+<div class="product-container">
+  <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+    <form action="/FPTLibrary/searchBook" method="get" style="display: flex; gap: 10px;">
+      <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm theo tên sách..." style="max-width: 250px;">
+      <button type="submit" class="btn btn-success">Tìm kiếm</button>
+    </form>
+  </div>
+  <p style="color: green"></p>
+  <table>
+    <thead>
+    <tr>
+      <th>Mã Số</th>
+      <th>Tên Sách</th>
+      <th>Nhà sản xuất</th>
+      <th>Chủ đề</th>
+      <th>Số bản còn lại</th>
+      <th>Tổng số bản</th>
+      <th>Active</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="b:${bookDTOS}">
+      <td th:text="${b.getBookID()}"></td>
+      <td th:text="${b.getTitle()}"></td>
+      <td th:text="${b.getAuthor()}"></td>
+      <td th:text="${b.getCategory().getCategoryName()}"></td>
+      <td th:text="${b.getAvailableCopies()}"></td>
+      <td th:text="${b.getTotalCopies()}"></td>
+      <td>
+        <button class="btn edit-btn" data-bs-toggle="modal" data-bs-target="#newblogadd">Đặt sách</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="pagination">
+    <button class="page-btn" disabled>« Trước</button>
+    <button class="page-btn active">1</button>
+    <button class="page-btn">2</button>
+    <button class="page-btn">3</button>
+    <button class="page-btn">Sau »</button>
+  </div>
+</div>
+<!-- Modal chỉnh sửa tên và logic đặt sách -->
+<div class="modal fade" id="newblogadd" tabindex="-1" aria-labelledby="reserveBookLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <form action="/reserveBook" method="post" enctype="multipart/form-data">
+        <div class="modal-header border-bottom p-3">
+          <h5 class="modal-title" id="reserveBookLabel">Đặt Sách</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        </div>
+
+        <div class="modal-body p-3 pt-4">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Mã sách:</label>
+              <input type="text" name="bookId" class="form-control" required readonly>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Tên người mượn:</label>
+              <input type="text" name="userName" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Tên sách:</label>
+              <input type="text" name="bookId" class="form-control" required readonly>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Chủ đề:</label>
+              <input type="text" name="bookId" class="form-control" required readonly>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Ngày mượn</label>
+              <input type="date" name="quantity" class="form-control" min="1" required id="borrowDate"/>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Ngày trả sách</label>
+              <input type="date" name="quantity" class="form-control" min="1" required id="returnDate"/>
+            </div>
+          </div>
+
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary">Xác nhận đặt</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const categoryToggle = document.getElementById('category-toggle');
+  const categoryList = document.getElementById('category-list');
+
+  categoryToggle.addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default anchor behavior
+
+    const isOpen = categoryList.style.display === 'block';
+    categoryList.style.display = isOpen ? 'none' : 'block';
+
+    // Toggle arrow rotation class
+    categoryToggle.classList.toggle('open', !isOpen);
+
+    // Update aria-expanded attribute
+    categoryToggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+</script>
+<script>
+  // Set the borrow date input to today's date automatically
+  document.addEventListener('DOMContentLoaded', function() {
+    const borrowDateInput = document.getElementById('borrowDate');
+    if (borrowDateInput) {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = (today.getMonth() + 1).toString().padStart(2, '0'); // Months are zero based
+      const dd = today.getDate().toString().padStart(2, '0');
+      borrowDateInput.value = `${yyyy}-${mm}-${dd}`;
+    }
+  });
+</script>
+<script>
+  // Set the borrow date input to today's date automatically
+  document.addEventListener('DOMContentLoaded', function() {
+    const borrowDateInput = document.getElementById('returnDate');
+    if (borrowDateInput) {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = (today.getMonth() + 1).toString().padStart(2, '0'); // Months are zero based
+      const dd = today.getDate().toString().padStart(2, '0');
+      borrowDateInput.value = `${yyyy}-${mm}-${dd}`;
+    }
+  });
+</script>
+
 </body>
 </html>
+

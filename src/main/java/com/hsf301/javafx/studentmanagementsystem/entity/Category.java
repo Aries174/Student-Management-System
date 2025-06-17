@@ -13,7 +13,7 @@ public class Category {
     private int categoryId;
     @Column(name = "CategoryName",columnDefinition = "NVARCHAR(255)")
     private String categoryName;
-    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Book> books;
     public Category() {

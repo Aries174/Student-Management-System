@@ -23,7 +23,7 @@ public class Book {
     @JsonManagedReference
     private Set<BorrowRecord> borrowRecords;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoryID",nullable = false,referencedColumnName = "categoryID")
     private Category category;
     public Book() {
@@ -34,6 +34,15 @@ public class Book {
         this.author = author;
         this.availableCopies = availableCopies;
         this.totalCopies = totalCopies;
+    }
+
+    public Book(String title, int bookID, String author, int availableCopies, int totalCopies, Category category) {
+        this.title = title;
+        this.bookID = bookID;
+        this.author = author;
+        this.availableCopies = availableCopies;
+        this.totalCopies = totalCopies;
+        this.category = category;
     }
 
     public int getBookID() {
@@ -75,5 +84,13 @@ public class Book {
 
     public void setTotalCopies(int totalCopies) {
         this.totalCopies = totalCopies;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

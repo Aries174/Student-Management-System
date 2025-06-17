@@ -1,5 +1,6 @@
 package com.hsf301.javafx.studentmanagementsystem.dto;
 
+import com.hsf301.javafx.studentmanagementsystem.entity.Category;
 import jakarta.persistence.Column;
 
 public class BookDTO {
@@ -8,7 +9,7 @@ public class BookDTO {
     private String author;
     private int availableCopies;
     private int totalCopies;
-
+    private Category category;
     public BookDTO() {
     }
 
@@ -18,6 +19,15 @@ public class BookDTO {
         this.author = author;
         this.availableCopies = availableCopies;
         this.totalCopies = totalCopies;
+    }
+
+    public BookDTO(int bookID,String title, String author, int availableCopies, int totalCopies, Category category) {
+        this.bookID = bookID;
+        this.title = title;
+        this.author = author;
+        this.availableCopies = availableCopies;
+        this.totalCopies = totalCopies;
+        this.category = category;
     }
 
     public int getBookID() {
@@ -58,5 +68,13 @@ public class BookDTO {
 
     public void setTotalCopies(int totalCopies) {
         this.totalCopies = totalCopies;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

@@ -6,6 +6,8 @@ import com.hsf301.javafx.studentmanagementsystem.repository.BookRepository;
 import com.hsf301.javafx.studentmanagementsystem.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class BookServiceImpl implements BookService {
@@ -22,8 +24,50 @@ public class BookServiceImpl implements BookService {
                 book.getTitle(),
                 book.getAuthor(),
                 book.getAvailableCopies(),
-                book.getTotalCopies()
+                book.getTotalCopies(),
+                book.getCategory()
         )).toList();
         return bookDTOs;
     }
+
+    @Override
+    public List<BookDTO> getAllBookCategory(int categoryID) {
+        List<Book>books=bookRepository.findByCategory_CategoryId(categoryID);
+        List<BookDTO> bookDTOs=books.stream().map(book -> new BookDTO(
+                book.getBookID(),
+                book.getTitle(),
+                book.getAuthor(),
+                book.getAvailableCopies(),
+                book.getTotalCopies(),
+                book.getCategory()
+        )).toList();
+        return bookDTOs;
+    }
+
+    @Override
+    public List<BookDTO> searchBookByName(String bookName) {
+        List<Book> books=bookRepository.findByTitleContainingIgnoreCase(bookName);
+        List<BookDTO> bookDTOs=books.stream().map(book -> new BookDTO(
+                book.getBookID(),
+                book.getTitle(),
+                book.getAuthor(),
+                book.getAvailableCopies(),
+                book.getTotalCopies(),
+                book.getCategory()
+        )).toList();
+        return bookDTOs;
+    }
+
+    @Override
+    public BookDTO getBookById(int id) {
+        return bookRepository.findById(id).map(book -> new BookDTO(
+                book.getBookID(),
+                book.getTitle(),
+                book.getAuthor(),
+                book.getAvailableCopies(),
+                book.getTotalCopies(),
+                book.getCategory()
+        )).orElse(null);
+    }
+
 }

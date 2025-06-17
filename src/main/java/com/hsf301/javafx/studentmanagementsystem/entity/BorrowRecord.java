@@ -36,6 +36,13 @@ public class BorrowRecord {
         this.status = status;
     }
 
+    public BorrowRecord(Date borrowDate, Date dueDate, Date returnDate, boolean status) {
+        this.borrowDate = borrowDate;
+        this.dueDate = dueDate;
+        this.returnDate = returnDate;
+        this.status = status;
+    }
+
     public int getBorrowRecordID() {
         return borrowRecordID;
     }
