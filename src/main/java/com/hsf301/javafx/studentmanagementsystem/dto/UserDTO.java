@@ -1,5 +1,6 @@
 package com.hsf301.javafx.studentmanagementsystem.dto;
 
+import com.hsf301.javafx.studentmanagementsystem.entity.Role;
 import jakarta.persistence.Column;
 
 public class UserDTO {
@@ -7,15 +8,19 @@ public class UserDTO {
     private String name;
     private String email;
     private String password;
-
+    private String confirmPassword;
+    private RoleDTO role;
     public UserDTO() {
     }
 
-    public UserDTO(int userId, String name, String email, String password) {
+    public UserDTO(int userId, String name, String email, String password, String confirmPassword,RoleDTO role) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.confirmPassword = confirmPassword;
+        this.role = role;
+
     }
 
     public int getUserId() {
@@ -48,5 +53,21 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public RoleDTO getRole() {
+        return role;
+    }
+
+    public void setRole(RoleDTO role) {
+        this.role = role;
     }
 }

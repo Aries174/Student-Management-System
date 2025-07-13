@@ -46,8 +46,5 @@ public class HomeController {
         model.addAttribute("categories", categoryService.getAllCategories());
         return "searchBook";
     }
-    @GetMapping("/login")
-    public String login(Model model) {
-        return "login";
-    }
+
 }

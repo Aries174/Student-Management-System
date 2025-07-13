@@ -173,26 +173,30 @@
   </nav>
 
   <!-- Login Form -->
-  <form id="loginPanel" role="tabpanel" aria-labelledby="loginTab" class="active" novalidate>
+  <form th:action="@{/login}" th:object="${login}" method="post" id="loginPanel" role="tabpanel" aria-labelledby="loginTab" class="active" novalidate>
     <div class="error-message" id="loginError" role="alert" aria-live="assertive"></div>
     <label for="loginEmail">Email</label>
-    <input type="email" id="loginEmail" name="loginEmail" autocomplete="email" required placeholder="name@example.com" />
+    <input type="email" id="loginEmail" name="email" autocomplete="email" required placeholder="name@example.com" />
     <label for="loginPassword">Password</label>
-    <input type="password" id="loginPassword" name="loginPassword" autocomplete="current-password" required placeholder="Your password" />
+    <input type="password" id="loginPassword" name="password" autocomplete="current-password" required placeholder="Your password" />
     <button type="submit" class="submit-btn">Log In</button>
   </form>
 
   <!-- Register Form -->
-  <form id="registerPanel" role="tabpanel" aria-labelledby="registerTab" novalidate>
+  <form th:action="@{/register}" th:object="${register}" method="post" id="registerPanel" role="tabpanel" aria-labelledby="registerTab" novalidate>
     <div class="error-message" id="registerError" role="alert" aria-live="assertive"></div>
     <label for="registerName">Full Name</label>
-    <input type="text" id="registerName" name="registerName" autocomplete="name" required placeholder="Your full name" />
+    <input type="text" id="registerName" name="name"  autocomplete="name" required placeholder="Your full name" th:field="*{name}"/>
+
     <label for="registerEmail">Email</label>
-    <input type="email" id="registerEmail" name="registerEmail" autocomplete="email" required placeholder="name@example.com" />
+    <input type="email" id="registerEmail" name="email" autocomplete="email" required placeholder="name@example.com" th:field="*{email}" />
+
     <label for="registerPassword">Password</label>
-    <input type="password" id="registerPassword" name="registerPassword" autocomplete="new-password" required placeholder="Choose a password" />
+    <input type="password" id="registerPassword" name="password" autocomplete="new-password" required placeholder="Choose a password" th:field="*{password}"/>
+
     <label for="registerConfirmPassword">Confirm Password</label>
-    <input type="password" id="registerConfirmPassword" name="registerConfirmPassword" autocomplete="new-password" required placeholder="Repeat your password" />
+    <input type="password" id="registerConfirmPassword" name="confirmPassword" autocomplete="new-password" required placeholder="Repeat your password" th:field="*{confirmPassword}"/>
+
     <button type="submit" class="submit-btn">Register</button>
   </form>
 </main>
@@ -274,68 +278,68 @@
     }
 
     // Login form submit
-    loginPanel.addEventListener('submit', e => {
-      e.preventDefault();
-      clearErrors();
-      const email = loginPanel.loginEmail.value.trim();
-      const password = loginPanel.loginPassword.value;
-
-      if (!email || !validateEmail(email)) {
-        loginError.textContent = 'Please enter a valid email address.';
-        loginError.classList.add('active');
-        loginPanel.loginEmail.focus();
-        return;
-      }
-      if (!password) {
-        loginError.textContent = 'Please enter your password.';
-        loginError.classList.add('active');
-        loginPanel.loginPassword.focus();
-        return;
-      }
-
-      // Simulate success login
-      alert(`Welcome back, ${email}! (This is a demo, no backend connection.)`);
-      loginPanel.reset();
-    });
+    // loginPanel.addEventListener('submit', e => {
+    //   e.preventDefault();
+    //   clearErrors();
+    //   const email = loginPanel.loginEmail.value.trim();
+    //   const password = loginPanel.loginPassword.value;
+    //
+    //   if (!email || !validateEmail(email)) {
+    //     loginError.textContent = 'Please enter a valid email address.';
+    //     loginError.classList.add('active');
+    //     loginPanel.loginEmail.focus();
+    //     return;
+    //   }
+    //   if (!password) {
+    //     loginError.textContent = 'Please enter your password.';
+    //     loginError.classList.add('active');
+    //     loginPanel.loginPassword.focus();
+    //     return;
+    //   }
+    //
+    //   // Simulate success login
+    //   alert(`Welcome back, ${email}! (This is a demo, no backend connection.)`);
+    //   loginPanel.reset();
+    // });
 
     // Register form submit
-    registerPanel.addEventListener('submit', e => {
-      e.preventDefault();
-      clearErrors();
-      const name = registerPanel.registerName.value.trim();
-      const email = registerPanel.registerEmail.value.trim();
-      const pass = registerPanel.registerPassword.value;
-      const confirmPass = registerPanel.registerConfirmPassword.value;
-
-      if (!name || name.length < 3) {
-        registerError.textContent = 'Please enter your full name (at least 3 characters).';
-        registerError.classList.add('active');
-        registerPanel.registerName.focus();
-        return;
-      }
-      if (!email || !validateEmail(email)) {
-        registerError.textContent = 'Please enter a valid email address.';
-        registerError.classList.add('active');
-        registerPanel.registerEmail.focus();
-        return;
-      }
-      if (pass.length < 6) {
-        registerError.textContent = 'Password must be at least 6 characters.';
-        registerError.classList.add('active');
-        registerPanel.registerPassword.focus();
-        return;
-      }
-      if (pass !== confirmPass) {
-        registerError.textContent = 'Passwords do not match.';
-        registerError.classList.add('active');
-        registerPanel.registerConfirmPassword.focus();
-        return;
-      }
-
-      // Simulate success registration
-      alert(`Thank you for registering, ${name}! (This is a demo, no backend connection.)`);
-      registerPanel.reset();
-    });
+    // registerPanel.addEventListener('submit', e => {
+    //   e.preventDefault();
+    //   clearErrors();
+    //   const name = registerPanel.registerName.value.trim();
+    //   const email = registerPanel.registerEmail.value.trim();
+    //   const pass = registerPanel.registerPassword.value;
+    //   const confirmPass = registerPanel.registerConfirmPassword.value;
+    //
+    //   if (!name || name.length < 3) {
+    //     registerError.textContent = 'Please enter your full name (at least 3 characters).';
+    //     registerError.classList.add('active');
+    //     registerPanel.registerName.focus();
+    //     return;
+    //   }
+    //   if (!email || !validateEmail(email)) {
+    //     registerError.textContent = 'Please enter a valid email address.';
+    //     registerError.classList.add('active');
+    //     registerPanel.registerEmail.focus();
+    //     return;
+    //   }
+    //   if (pass.length < 6) {
+    //     registerError.textContent = 'Password must be at least 6 characters.';
+    //     registerError.classList.add('active');
+    //     registerPanel.registerPassword.focus();
+    //     return;
+    //   }
+    //   if (pass !== confirmPass) {
+    //     registerError.textContent = 'Passwords do not match.';
+    //     registerError.classList.add('active');
+    //     registerPanel.registerConfirmPassword.focus();
+    //     return;
+    //   }
+    //
+    //   // Simulate success registration
+    //   alert(`Thank you for registering, ${name}! (This is a demo, no backend connection.)`);
+    //   registerPanel.reset();
+    // });
   })();
 </script>
 </body>

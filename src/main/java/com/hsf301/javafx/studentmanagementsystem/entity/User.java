@@ -2,6 +2,7 @@ package com.hsf301.javafx.studentmanagementsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Set;
 
@@ -17,6 +18,8 @@ public class User {
     private String email;
     @Column(name = "password",length = 255)
     private String password;
+    @NotBlank(message = "Confirm password is required")
+    private String confirmPassword;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<BorrowRecord> borrowRecords;
@@ -28,10 +31,13 @@ public class User {
     public User() {
     }
 
-    public User(String name, String email, String password) {
+    public User(int userId, String name, String email, String password, String confirmPassword,Role role) {
+        this.userId = userId;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.confirmPassword = confirmPassword;
+        this.role = role;
     }
 
     public int getUserId() {
@@ -64,5 +70,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
