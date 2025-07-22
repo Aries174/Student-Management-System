@@ -2,7 +2,9 @@ package com.hsf301.javafx.studentmanagementsystem.service.impl;
 
 import com.hsf301.javafx.studentmanagementsystem.dto.BookDTO;
 import com.hsf301.javafx.studentmanagementsystem.entity.Book;
+import com.hsf301.javafx.studentmanagementsystem.entity.Category;
 import com.hsf301.javafx.studentmanagementsystem.repository.BookRepository;
+import com.hsf301.javafx.studentmanagementsystem.repository.CategoryRepository;
 import com.hsf301.javafx.studentmanagementsystem.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,11 @@ import java.util.List;
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
+    private final CategoryRepository categoryRepository;
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository, CategoryRepository categoryRepository) {
         this.bookRepository = bookRepository;
+        this.categoryRepository = categoryRepository;
     }
     @Override
     public List<BookDTO> getAllBooks() {
@@ -68,6 +72,13 @@ public class BookServiceImpl implements BookService {
                 book.getTotalCopies(),
                 book.getCategory()
         )).orElse(null);
+    }
+
+    @Override
+    public void insertBook(BookDTO bookDTO) {
+        Category category=categoryRepository.findById(bookDTO.getCategoryId()).orElseThrow(()->new RuntimeException("Category not found"));
+        Book book=new Book(bookDTO.getTitle(),bookDTO.getAuthor(),bookDTO.getAvailableCopies(),bookDTO.getTotalCopies(),category);
+        bookRepository.save(book);
     }
 
 }

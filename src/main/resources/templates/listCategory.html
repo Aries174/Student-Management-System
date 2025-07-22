@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+  <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body>
+<div class="sidebar">
+  <h2>FPT Library</h2>
+  <ul>
+    <li><a href="#">Quản lý sách</a></li>
+    <li><a href="#">Quản lý Thể loại</a></li>
+    <li><a href="#">Quản lý mượn – trả sách</a></li>
+    <li><a href="#">Thông báo & gửi email</a></li>
+    <li><a href="/FPTLibrary/login">Đăng nhập</a></li>
+    <li><a href="#">Tài Khoản</a></li>
+    <li><a href="#">Cài đặt</a></li>
+  </ul>
+</div>
+<div class="product-container">
+  <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+    <form action="/FPTLibrary/searchBook" method="get" style="display: flex; gap: 10px;">
+      <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm theo tên sách..."
+             style="max-width: 250px;">
+      <button type="submit" class="btn btn-success">Tìm kiếm</button>
+    </form>
+  </div>
+  <a th:href="@{/addCategory}" class="btn btn-primary add-btn">Thêm thể loại</a>
+  <table>
+    <thead>
+    <tr>
+      <th>Mã Số</th>
+      <th>Tên Thể loại</th>
+      <th>Active</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="lc:${categories}">
+      <td th:text="${lc.categoryId}"></td>
+      <td th:text="${lc.categoryName}"></td>
+      <td>
+        <a th:href="@{/editCategory/{id}(id=${lc.categoryId})}" class="btn edit-btn">Sửa</a>
+        <a th:href="@{/delete(id=${lc.categoryId})}" th:onclick="return confirm('You sure continua?')" class="btn delete-btn">Delete</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="pagination">
+    <button class="page-btn" disabled>« Trước</button>
+    <button class="page-btn active">1</button>
+    <button class="page-btn">2</button>
+    <button class="page-btn">3</button>
+    <button class="page-btn">Sau »</button>
+  </div>
+</div>
+</body>
+<script>
+  const categoryToggle = document.getElementById('category-toggle');
+  const categoryList = document.getElementById('category-list');
+
+  categoryToggle.addEventListener('click', function (event) {
+    event.preventDefault(); // Prevent default anchor behavior
+
+    const isOpen = categoryList.style.display === 'block';
+    categoryList.style.display = isOpen ? 'none' : 'block';
+
+    // Toggle arrow rotation class
+    categoryToggle.classList.toggle('open', !isOpen);
+
+    // Update aria-expanded attribute
+    categoryToggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+  function sortTable(columnIndex) {
+    const table = document.getElementById("bookTable");
+    const rows = Array.from(table.rows);
+    const isAscending = table.dataset.sortOrder === "asc";
+    rows.sort((a, b) => {
+      const aText = a.cells[columnIndex].innerText;
+      const bText = b.cells[columnIndex].innerText;
+      if (columnIndex === 4 || columnIndex === 5) { // For numeric columns
+        return isAscending ? aText - bText : bText - aText;
+      } else {
+        return isAscending ? aText.localeCompare(bText) : bText.localeCompare(aText);
+      }
+    });
+    // Clear the table and append sorted rows
+    while (table.firstChild) {
+      table.removeChild(table.firstChild);
+    }
+    rows.forEach(row => table.appendChild(row));
+
+</script>
+</html>

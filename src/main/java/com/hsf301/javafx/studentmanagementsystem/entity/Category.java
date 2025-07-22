@@ -16,7 +16,12 @@ public class Category {
     @OneToMany(mappedBy = "category",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Book> books;
+
     public Category() {
+    }
+
+    public Category(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public Category(int categoryId, String categoryName) {

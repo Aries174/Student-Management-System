@@ -26,14 +26,13 @@ public class Book {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoryID",nullable = false,referencedColumnName = "categoryID")
     private Category category;
-    public Book() {
-    }
 
-    public Book(String title, String author, int availableCopies, int totalCopies) {
+    public Book(String title, String author, int availableCopies, int totalCopies,Category category) {
         this.title = title;
         this.author = author;
         this.availableCopies = availableCopies;
         this.totalCopies = totalCopies;
+        this.category = category;
     }
 
     public Book(String title, int bookID, String author, int availableCopies, int totalCopies, Category category) {
@@ -43,6 +42,10 @@ public class Book {
         this.availableCopies = availableCopies;
         this.totalCopies = totalCopies;
         this.category = category;
+    }
+
+    public Book() {
+
     }
 
     public int getBookID() {

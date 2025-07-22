@@ -1,7 +1,6 @@
 package com.hsf301.javafx.studentmanagementsystem.dto;
 
 import com.hsf301.javafx.studentmanagementsystem.entity.Category;
-import jakarta.persistence.Column;
 
 public class BookDTO {
     private int bookID;
@@ -9,10 +8,9 @@ public class BookDTO {
     private String author;
     private int availableCopies;
     private int totalCopies;
-    private Category category;
-    public BookDTO() {
+    private int categoryId;
+    public BookDTO(int bookID, String title, String author, int availableCopies, int totalCopies, Category category) {
     }
-
     public BookDTO(int bookID, String title, String author, int availableCopies, int totalCopies) {
         this.bookID = bookID;
         this.title = title;
@@ -21,13 +19,16 @@ public class BookDTO {
         this.totalCopies = totalCopies;
     }
 
-    public BookDTO(int bookID,String title, String author, int availableCopies, int totalCopies, Category category) {
-        this.bookID = bookID;
+    public BookDTO(String title, String author, int availableCopies, int totalCopies, int categoryId) {
         this.title = title;
         this.author = author;
         this.availableCopies = availableCopies;
         this.totalCopies = totalCopies;
-        this.category = category;
+        this.categoryId = categoryId;
+    }
+
+    public BookDTO() {
+
     }
 
     public int getBookID() {
@@ -70,11 +71,11 @@ public class BookDTO {
         this.totalCopies = totalCopies;
     }
 
-    public Category getCategory() {
-        return category;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 }

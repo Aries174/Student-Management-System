@@ -27,15 +27,4 @@ public class LoginController {
         userService.registerUser(userDTO);
         return "login";
     }
-    @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("login") UserDTO userDTO,Model model) {
-        try{
-            UserDTO user = userService.loginUser(userDTO);
-            model.addAttribute("user", user);
-            return "redirect:/home";
-        }catch(IllegalArgumentException e){
-            model.addAttribute("error", e.getMessage());
-            return "login";
-        }
-    }
 }

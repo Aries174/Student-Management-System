@@ -18,15 +18,15 @@ public class User {
     private String email;
     @Column(name = "password",length = 255)
     private String password;
+    @Transient
     @NotBlank(message = "Confirm password is required")
     private String confirmPassword;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<BorrowRecord> borrowRecords;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "roleID",referencedColumnName = "roleID")
-    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "roleID", referencedColumnName = "roleID")
     private Role role;
     public User() {
     }

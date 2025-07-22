@@ -22,6 +22,10 @@ public class HomeController {
         this.categoryService = categoryService;
     }
     @GetMapping("/")
+    public String redirectToHome() {
+        return "redirect:/home";
+    }
+    @GetMapping("/home")
     public String home(Model model) {
         model.addAttribute("books", bookService.getAllBooks());
         model.addAttribute("categories", categoryService.getAllCategories());
@@ -30,6 +34,7 @@ public class HomeController {
     @GetMapping("/reserveBook")
     public String reserveBook(@RequestParam("id") int id, Model model) {
         BookDTO book = bookService.getBookById(id);
+        model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("book", book);
         return "reserveBook"; // trang chỉ có form/modal
     }
@@ -46,5 +51,4 @@ public class HomeController {
         model.addAttribute("categories", categoryService.getAllCategories());
         return "searchBook";
     }
-
 }

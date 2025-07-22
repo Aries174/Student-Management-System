@@ -25,4 +25,31 @@ public class CategoryServiceImpl implements CategoryService {
         )).toList();
         return categoriesDTO;
     }
+
+    @Override
+    public void addCategory(CategoryDTO category) {
+        Category categoryEntity = new Category(category.getCategoryName());
+        categoryRepository.save(categoryEntity);
+    }
+
+    @Override
+    public void deleteCategory(int id) {
+        categoryRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateCategory(CategoryDTO category) {
+        Category existing=categoryRepository.findById(category.getCategoryId()).orElseThrow(()->new RuntimeException("Category not found"));
+        existing.setCategoryName(category.getCategoryName());
+        categoryRepository.save(existing);
+    }
+
+    @Override
+    public CategoryDTO getCategory(int id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy thể loại"));
+
+        return new CategoryDTO(category.getCategoryId(), category.getCategoryName());
+    }
+
 }

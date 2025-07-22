@@ -1,9 +1,14 @@
 package com.hsf301.javafx.studentmanagementsystem.service;
 
 import com.hsf301.javafx.studentmanagementsystem.dto.UserDTO;
-import com.hsf301.javafx.studentmanagementsystem.entity.User;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
     public void registerUser(UserDTO user);
-    public UserDTO loginUser(UserDTO user);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }
+
+

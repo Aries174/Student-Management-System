@@ -3,6 +3,9 @@ package com.hsf301.javafx.studentmanagementsystem.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "Role")
 public class Role {
@@ -11,9 +14,8 @@ public class Role {
     private int roleId;
     @Column(name = "RoleName",columnDefinition = "NVARCHAR(255)")
     private String roleName;
-    @OneToOne(mappedBy = "role")
-    @JsonManagedReference
-    private User user;
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    private Set<User> users = new HashSet<>();
     public Role() {
     }
 
