@@ -81,4 +81,26 @@ public class BookServiceImpl implements BookService {
         bookRepository.save(book);
     }
 
+    @Override
+    public void deleteBook(int id) {
+        bookRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateBook(BookDTO bookDTO) {
+    Book book=bookRepository.findById(bookDTO.getBookID()).orElseThrow(()->new RuntimeException("Book not found"));
+    book.setTitle(bookDTO.getTitle());
+    book.setAuthor(bookDTO.getAuthor());
+    book.setAvailableCopies(bookDTO.getAvailableCopies());
+    book.setTotalCopies(bookDTO.getTotalCopies());
+    book.setCategory(categoryRepository.findById(bookDTO.getCategoryId()).orElse(null));
+    bookRepository.save(book);
+    }
+
+    @Override
+    public BookDTO getBook(int id) {
+        Book book=bookRepository.findById(id).orElseThrow(()->new RuntimeException("Book not found"));
+        return new BookDTO(book.getBookID(),book.getTitle(),book.getAuthor(),book.getAvailableCopies(),book.getTotalCopies(),book.getCategory());
+    }
+
 }

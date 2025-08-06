@@ -24,47 +24,4 @@ public class AdminController {
         model.addAttribute("categories", categoryService.getAllCategories());
         return "Admin";
     }
-    @GetMapping("/addBook")
-    public String addBook(Model model) {
-        model.addAttribute("categories", categoryService.getAllCategories());
-        model.addAttribute("addBook",new BookDTO());
-        return "addBook";
-    }
-    @PostMapping("/addBook")
-    public String addBook(@ModelAttribute("addBook") BookDTO book) {
-        bookService.insertBook(book);
-        return "redirect:/admin";
-    }
-    @GetMapping("/listCategory")
-    public String listCategory(Model model) {
-        model.addAttribute("categories", categoryService.getAllCategories());
-        return "listCategory";
-    }
-    @GetMapping("/addCategory")
-    public String addCategory(Model model) {
-        model.addAttribute("addCategory",new CategoryDTO());
-        return "addCategory";
-    }
-    @PostMapping("/addCategory")
-    public String addCategory(@ModelAttribute("addCategory") CategoryDTO category) {
-        categoryService.addCategory(category);
-        return "redirect:/listCategory";
-    }
-    @GetMapping("/delete")
-    public String delete(@RequestParam("id")int id, Model model) {
-        categoryService.deleteCategory(id);
-        return "redirect:/listCategory";
-    }
-    @GetMapping("/editCategory/{id}")
-    public String editCategory(@PathVariable int id, Model model) {
-        CategoryDTO categoryDTO = categoryService.getCategory(id);
-        model.addAttribute("editCategory", categoryDTO);
-        return "editCategory"; // Có thể tái sử dụng form thêm
-    }
-
-    @PostMapping("/updateCategory")
-    public String updateCategory(@ModelAttribute("editCategory") CategoryDTO categoryDTO) {
-        categoryService.updateCategory(categoryDTO);
-        return "redirect:/listCategory";
-    }
 }

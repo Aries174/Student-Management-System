@@ -9,16 +9,16 @@ public class BookDTO {
     private int availableCopies;
     private int totalCopies;
     private int categoryId;
+    private String categoryName;
     public BookDTO(int bookID, String title, String author, int availableCopies, int totalCopies, Category category) {
-    }
-    public BookDTO(int bookID, String title, String author, int availableCopies, int totalCopies) {
         this.bookID = bookID;
         this.title = title;
         this.author = author;
         this.availableCopies = availableCopies;
         this.totalCopies = totalCopies;
+        this.categoryId=category.getCategoryId();
+        this.categoryName=category.getCategoryName();
     }
-
     public BookDTO(String title, String author, int availableCopies, int totalCopies, int categoryId) {
         this.title = title;
         this.author = author;
@@ -77,5 +77,13 @@ public class BookDTO {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

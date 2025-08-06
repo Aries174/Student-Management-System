@@ -40,25 +40,25 @@
     <div class="row">
       <div class="col-md-6 mb-3">
         <label class="form-label">Tên sách:</label>
-        <input type="text" name="bookId" class="form-control"  th:field="*{title}">
+        <input type="text" name="title" class="form-control"  th:field="*{title}">
       </div>
       <div class="col-md-6 mb-3">
         <label class="form-label">Tác giả:</label>
-        <input type="text" name="userName" class="form-control" th:field="*{author}">
+        <input type="text" name="author" class="form-control" th:field="*{author}">
       </div>
       <div class="col-md-6 mb-3">
         <label class="form-label">Bản có sẵn:</label>
-        <input type="number" name="borrowDate" class="form-control" required id="borrowDate" th:field="*{availableCopies}">
+        <input type="number" name="availableCopies" class="form-control" required id="borrowDate" th:field="*{availableCopies}">
       </div>
 
       <div class="col-md-6 mb-3">
         <label class="form-label">Tổng số bản:</label>
-        <input type="number" name="returnDate" class="form-control" required id="returnDate" th:field="*{totalCopies}">
+        <input type="number" name="totalCopies" class="form-control" required id="returnDate" th:field="*{totalCopies}">
       </div>
       <div class="col-md-6 mb-3">
         <label for="category">Thể loại:</label>
         <select class="form-control" th:field="*{categoryId}" id="category">
-          <option value="" disabled selected>-- Chọn thể loại --</option>
+          <option value="0" disabled selected>-- Chọn thể loại --</option>
 
           <!-- Đây là cách đúng -->
           <option th:each="category : ${categories}"

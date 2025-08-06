@@ -46,12 +46,12 @@
             <td th:text="${b.getBookID()}"></td>
             <td th:text="${b.getTitle()}"></td>
             <td th:text="${b.getAuthor()}"></td>
-            <td th:text="${b.getCategory().getCategoryName()}"></td>
+            <td th:text="${b.categoryName}"></td>
             <td th:text="${b.getAvailableCopies()}"></td>
             <td th:text="${b.getTotalCopies()}"></td>
             <td>
-                <button class="btn edit-btn">Sửa</button>
-                <button class="btn delete-btn">Xóa</button>
+                <a th:href="@{/editBook/{id}(id=${b.bookID})}" class="btn edit-btn">Sửa</a>
+                <a th:href="@{/deleteBook(id=${b.bookID})}" th:onclick="return confirm('You sure continua?')" class="btn delete-btn">Delete</a>
             </td>
         </tr>
         </tbody>
