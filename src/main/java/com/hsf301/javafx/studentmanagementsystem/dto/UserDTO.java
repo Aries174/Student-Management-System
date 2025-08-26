@@ -23,6 +23,14 @@ public class UserDTO {
 
     }
 
+    public UserDTO(int userId, String name, String email, String password, String confirmPassword) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+    }
+
     public int getUserId() {
         return userId;
     }

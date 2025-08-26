@@ -18,40 +18,33 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final CustomLoginSuccessHandler customLoginSuccessHandler;
     @Autowired
-    public WebSecurityConfig(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    public WebSecurityConfig(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, CustomLoginSuccessHandler customLoginSuccessHandler) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
+        this.customLoginSuccessHandler = customLoginSuccessHandler;
     }
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/", "/home", "/admin", "/listCategory","/addCategory","/delete","/category","/editCategory","/updateCategory", "/searchBook", "/reserveBook", "/register", "/css/**", "/js/**").permitAll()
-//                        .anyRequest().authenticated()
-//                )
-//                .formLogin(login -> login
-//                        .loginPage("/login").usernameParameter("email")
-//                        .passwordParameter("password")
-//                        .defaultSuccessUrl("/home", true)
-//                        .permitAll()
-//                )
-//                .logout(logout -> logout.permitAll());
-//
-//        return http.build();
-//    }
-@Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
-            .authorizeHttpRequests(auth -> auth
-                    .anyRequest().permitAll() // 👈 Cho phép tất cả URL
-            )
-            .csrf(csrf -> csrf.disable()) // 👈 (Tùy chọn) tắt CSRF để test post dễ hơn
-            .formLogin(form -> form.disable()) // 👈 Không bật form login
-            .httpBasic(basic -> basic.disable()); // 👈 Không bật Basic Auth
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/home", "/listCategory","/category", "/searchBook", "/reserveBook", "/register", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(login -> login
+                        .loginPage("/login").usernameParameter("email")
+                        .passwordParameter("password")
+                        .successHandler(customLoginSuccessHandler)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/").permitAll());
 
-    return http.build();
-}
+        return http.build();
+    }
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);

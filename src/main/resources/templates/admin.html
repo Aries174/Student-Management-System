@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">>
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Admin</title>
@@ -15,7 +15,12 @@
         <li><a th:href="@{/listCategory}">Quản lý Thể loại</a></li>
         <li><a href="#">Quản lý mượn – trả sách</a></li>
         <li><a href="#">Thông báo & gửi email</a></li>
-        <li><a href="/FPTLibrary/login">Đăng nhập</a></li>
+        <li sec:authorize="!isAuthenticated()"><a href="/FPTLibrary/login" >Đăng nhập</a></li>
+        <li sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}" method="post">
+                <button type="button" class="btn btn-link">Đăng xuất</button>
+            </form>
+        </li>
         <li><a href="#">Tài Khoản</a></li>
         <li><a href="#">Cài đặt</a></li>
     </ul>
@@ -98,7 +103,7 @@
         while (table.firstChild) {
             table.removeChild(table.firstChild);
         }
-        rows.forEach(row => table.appendChild(row));
+        rows.forEach(row => table.appendChild(row));}
 
 </script>
 </html>

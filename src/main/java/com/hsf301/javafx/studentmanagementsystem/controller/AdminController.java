@@ -1,7 +1,5 @@
 package com.hsf301.javafx.studentmanagementsystem.controller;
 
-import com.hsf301.javafx.studentmanagementsystem.dto.BookDTO;
-import com.hsf301.javafx.studentmanagementsystem.dto.CategoryDTO;
 import com.hsf301.javafx.studentmanagementsystem.service.BookService;
 import com.hsf301.javafx.studentmanagementsystem.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,6 @@ public class AdminController {
     public String admin(Model model) {
         model.addAttribute("books", bookService.getAllBooks());
         model.addAttribute("categories", categoryService.getAllCategories());
-        return "Admin";
+        return "admin";
     }
 }
