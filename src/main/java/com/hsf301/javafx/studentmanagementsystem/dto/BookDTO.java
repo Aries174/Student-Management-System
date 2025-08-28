@@ -27,6 +27,7 @@ public class BookDTO {
         this.categoryId = categoryId;
     }
 
+
     public BookDTO() {
 
     }

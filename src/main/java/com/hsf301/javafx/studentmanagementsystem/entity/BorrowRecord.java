@@ -1,5 +1,7 @@
 package com.hsf301.javafx.studentmanagementsystem.entity;
 
+import com.hsf301.javafx.studentmanagementsystem.dto.BookDTO;
+import com.hsf301.javafx.studentmanagementsystem.dto.UserDTO;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -25,22 +27,35 @@ public class BorrowRecord {
     @ManyToOne
     @JoinColumn(name = "bookID",nullable = false,referencedColumnName = "bookID")
     private Book book;
+
     public BorrowRecord() {
     }
 
-    public BorrowRecord(int borrowRecordID, Date borrowDate, Date dueDate, Date returnDate, boolean status) {
+    public BorrowRecord(int borrowRecordID, Date borrowDate, Date dueDate, Date returnDate, boolean status, User user, Book book) {
         this.borrowRecordID = borrowRecordID;
         this.borrowDate = borrowDate;
         this.dueDate = dueDate;
         this.returnDate = returnDate;
         this.status = status;
+        this.user = user;
+        this.book = book;
     }
 
-    public BorrowRecord(Date borrowDate, Date dueDate, Date returnDate, boolean status) {
+    public BorrowRecord(Date borrowDate, Date dueDate, Date returnDate, boolean status, User user, Book book) {
         this.borrowDate = borrowDate;
         this.dueDate = dueDate;
         this.returnDate = returnDate;
         this.status = status;
+        this.user = user;
+        this.book = book;
+    }
+
+    public BorrowRecord(int borrowRecordID, Date borrowDate, Date dueDate, Date returnDate, boolean b) {
+        this.borrowRecordID = borrowRecordID;
+        this.borrowDate = borrowDate;
+        this.dueDate = dueDate;
+        this.returnDate = returnDate;
+        this.status = b;
     }
 
     public int getBorrowRecordID() {
@@ -81,5 +96,21 @@ public class BorrowRecord {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 }

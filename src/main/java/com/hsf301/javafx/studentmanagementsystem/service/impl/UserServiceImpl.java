@@ -1,5 +1,6 @@
 package com.hsf301.javafx.studentmanagementsystem.service.impl;
 
+import com.hsf301.javafx.studentmanagementsystem.dto.RoleDTO;
 import com.hsf301.javafx.studentmanagementsystem.dto.UserDTO;
 import com.hsf301.javafx.studentmanagementsystem.entity.Role;
 import com.hsf301.javafx.studentmanagementsystem.entity.User;
@@ -47,6 +48,23 @@ public class UserServiceImpl implements UserService {
                 .password(user.getPassword())
                 .authorities(new SimpleGrantedAuthority("ROLE_"+user.getRole().getRoleName())) // phải là ROLE_*
                 .build();
+    }
+
+    @Override
+    public UserDTO findByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        RoleDTO roleDTO = new RoleDTO(
+                user.getRole().getRoleId(),
+                user.getRole().getRoleName()
+        );
+        UserDTO dto = new UserDTO();
+        dto.setUserId(user.getUserId());
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        dto.setPassword(user.getPassword());
+        dto.setRole(roleDTO);
+        return dto;
     }
 
 }

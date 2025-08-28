@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public interface UserService extends UserDetailsService {
     public void registerUser(UserDTO user);
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+    public UserDTO findByEmail(String email);
 }
 
 

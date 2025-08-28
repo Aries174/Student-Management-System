@@ -15,6 +15,7 @@
 
 <div class="sidebar">
     <h2>FPT Library</h2>
+
     <ul>
         <li>
             <a href="#" id="category-toggle" aria-expanded="false" aria-controls="category-list">Thể Loại</a>
@@ -45,7 +46,7 @@
             <button type="submit" class="btn btn-success">Tìm kiếm</button>
         </form>
     </div>
-    <p style="color: green"></p>
+    <div th:if="${messageSuccess}" class="alert alert-success" th:text="${messageSuccess}"></div>
     <table>
         <thead>
         <tr>
@@ -67,9 +68,8 @@
             <td th:text="${b.getAvailableCopies()}"></td>
             <td th:text="${b.getTotalCopies()}"></td>
             <td>
-                <form action="/" method="get">
-                    <a th:href="@{reserveBook(id=${b.bookID})}" class="btn btn-primary">Đặt sách</a>
-                </form>
+                <a sec:authorize="isAuthenticated" th:href="@{reserveBook(id=${b.bookID})}" class="btn btn-primary">Đặt sách</a>
+                <a sec:authorize="!isAuthenticated" th:href="@{/FPTLibrary/login}" class="btn btn-primary">Đặt sách</a>
             </td>
         </tr>
         </tbody>
